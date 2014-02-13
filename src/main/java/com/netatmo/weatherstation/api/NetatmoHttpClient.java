@@ -16,15 +16,12 @@
 
 package com.netatmo.weatherstation.api;
 
-import netatmo.rest.client.NetatmoSimpleClient;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.netatmo.weatherstation.api.model.Module;
@@ -32,7 +29,6 @@ import com.netatmo.weatherstation.api.model.Params;
 import com.netatmo.weatherstation.api.model.Station;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +60,8 @@ abstract public class NetatmoHttpClient {
      * @throws IOException 
      * @throws ClientProtocolException 
      */
-    protected void post(String url, HashMap<String, String> params, final NetatmoResponseHandler responseHandler) throws ClientProtocolException, IOException {    	
+    @SuppressWarnings("rawtypes")
+	protected void post(String url, HashMap<String, String> params, final NetatmoResponseHandler responseHandler) throws ClientProtocolException, IOException {    	
 		HttpPost request = new HttpPost(url);
 		
 		request.addHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");

@@ -50,8 +50,13 @@ public class NetatmoRestClient {
 	}
 	
 	public static void main(String[] args) {
+		String filename = "netatmo.properties";
+		
+		if(args.length > 0)
+			filename = args[0];
+		
 		try {
-			NetatmoRestClient nrc = new NetatmoRestClient("/tmp/netatmo.properties");
+			NetatmoRestClient nrc = new NetatmoRestClient(filename);
 			nrc.init();
 			// nrc.log();
 		} catch (FileNotFoundException e) {

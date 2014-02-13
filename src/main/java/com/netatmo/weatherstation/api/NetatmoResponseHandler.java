@@ -8,9 +8,7 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import com.netatmo.weatherstation.api.model.Measures;
 import com.netatmo.weatherstation.api.model.Params;

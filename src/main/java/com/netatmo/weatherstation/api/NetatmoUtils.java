@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class NetatmoUtils {
     public static final String KEY_ACCESS_TOKEN = "access_token";
     public static final String KEY_REFRESH_TOKEN = "refresh_token";
@@ -150,8 +151,8 @@ public class NetatmoUtils {
         return string;
     }
     
-    @SuppressWarnings("deprecation")
-    public static HttpClient trustEveryoneSslHttpClient() {
+    @SuppressWarnings("resource")
+	public static HttpClient trustEveryoneSslHttpClient() {
 	    try {
 			SchemeRegistry registry = new SchemeRegistry();
 
