@@ -1,15 +1,14 @@
-Netatmo client for Java SE.
-
+# Netatmo client for Java SE.
 It requires Java 1.7 at minimum to work.
 
 Just type : 
-	java -jar netatmo.rest.client-0.1.0.jar <netatmo_email> <netatmo_password>
+> java -jar netatmo.rest.client-0.1.0.jar your_netatmo_email your_netatmo_password
 
 Example :
->> java -jar netatmo.rest.client-0.1.0.jar franck@gmail.com my_pass_here
+> java -jar netatmo.rest.client-0.1.0.jar franck@gmail.com my_pass_here
 
 Output :
-Station 0 : Vallée Nozent (70:ee:50:01:48:6c)
+`Station 0 : Vallée Nozent (70:ee:50:01:48:6c)
 
 Vallée Nozent(Intérieur) :
 	Noise : 35 dB
@@ -23,5 +22,5 @@ Vallée Nozent(Extérieur) :
 	Co2 : 
 	Pressure : 
 	Humidity : 93 %
-	Temperature : 8.7 °C
+	Temperature : 8.7 °C`
 
