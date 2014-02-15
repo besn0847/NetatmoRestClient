@@ -24,3 +24,4 @@ Vallée Nozent(Extérieur) :
 	Humidity : 93 %
 	Temperature : 8.7 °C`
 
+JAR download : https://downloads.sourceforge.net/project/netatmo/netatmo.rest.client-0.1.0.jar
