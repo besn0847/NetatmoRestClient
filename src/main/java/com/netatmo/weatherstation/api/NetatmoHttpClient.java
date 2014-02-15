@@ -34,29 +34,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-abstract public class NetatmoHttpClient {
-    // API URLs that will be used for requests, see: http://dev.netatmo.com/doc/restapi.
-    protected final String URL_BASE = "https://api.netatmo.net";
-    protected final String URL_REQUEST_TOKEN = URL_BASE + "/oauth2/token";
-    protected final String URL_GET_DEVICES_LIST = URL_BASE + "/api/devicelist";
-    protected final String URL_GET_MEASURES = URL_BASE + "/api/getmeasure";
-
-    // You can find the AsyncHttpClient library documentation here: http://loopj.com/android-async-http.
-    //AsyncHttpClient mClient;
-    CloseableHttpClient mClient;
-    
+abstract public class NetatmoHttpClient {    
+    CloseableHttpClient mClient;    
     List<Station> stations;
-    
-    public static String TAG = "NetatmoHttpClient: ";
-    
-    final String userAgent = "Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
-    
+
     public NetatmoHttpClient() {
     	mClient = (CloseableHttpClient) NetatmoUtils.trustEveryoneSslHttpClient();
     }
     
     /**
-     * POST request using AsyncHttpClient.
+     * POST request using CloseableHttpClient.
      * @throws IOException 
      * @throws ClientProtocolException 
      */
@@ -76,10 +63,8 @@ abstract public class NetatmoHttpClient {
     }
 
     /**
-     * GET request using AsyncHttpClient.
-     * Since the access token is needed for each GET request to the Netatmo API,
-     * we need to check if it has not expired.
-     * See {@link #refreshToken(String, com.loopj.android.http.JsonHttpResponseHandler)}.
+     * GET request using CloseableHttpClient.
+     * No handling for token expiry
      * @throws IOException 
      * @throws ClientProtocolException 
      */
@@ -105,7 +90,7 @@ abstract public class NetatmoHttpClient {
         params.put("username", email);
         params.put("password", password);
 
-        post(URL_REQUEST_TOKEN, params, responseHandler);
+        post(NetatmoConstants.URL_REQUEST_TOKEN, params, responseHandler);
         
     }
 
@@ -117,7 +102,7 @@ abstract public class NetatmoHttpClient {
 	 */
 	public void getDevicesList(NetatmoResponseHandler responseHandler) {
 	    try {
-			get(URL_GET_DEVICES_LIST, new HashMap<String, String>(), responseHandler);
+			get(NetatmoConstants.URL_GET_DEVICES_LIST, new HashMap<String, String>(), responseHandler);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -159,15 +144,19 @@ abstract public class NetatmoHttpClient {
         params.put("date_end", "last");
 
         try {
-			get(URL_GET_MEASURES, params, responseHandler);
+			get(NetatmoConstants.URL_GET_MEASURES, params, responseHandler);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
     
+    /**
+     * Collect data for each module of each station
+     * 
+     * @param responseHandler
+     */
     public void getAllMeasures(NetatmoResponseHandler responseHandler) {
         for(int incr=0; incr <stations.size(); incr++) {
         	Station s = stations.get(incr);
@@ -180,6 +169,8 @@ abstract public class NetatmoHttpClient {
 	
     /**
      * Making sure to call {@link #storeTokens(String, String, long)} with proper values.
+     * 
+     * @param jsonresponse Auhtentication response including access token 
      */
     protected void processOAuthResponse(JSONObject response) {
         HashMap<String,String> parsedResponse = NetatmoUtils.parseOAuthResponse(response);
@@ -189,10 +180,18 @@ abstract public class NetatmoHttpClient {
                 Long.valueOf(parsedResponse.get(NetatmoUtils.KEY_EXPIRES_AT)));
     }
 
+    /**
+     * Set the station list variable
+     * @param list
+     */
 	public void setStationList(List<Station> list) {
 		this.stations = list;
 	}
 	
+	/**
+	 * Returns the list of discovered stations
+	 * @return stations
+	 */
 	public List<Station> getStationlist() {
 		return this.stations;
 	}

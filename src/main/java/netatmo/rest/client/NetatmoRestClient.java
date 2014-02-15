@@ -1,32 +1,23 @@
 package netatmo.rest.client;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.apache.http.client.ClientProtocolException;
 
 import com.netatmo.weatherstation.api.NetatmoResponseHandler;
-import com.netatmo.weatherstation.sample.SampleHttpClient;
 
 public class NetatmoRestClient {
-	
-	private SampleHttpClient nc;
+	private RestHttpClient nc;
 	private String username, password;
 
-	public NetatmoRestClient(String fileName) throws FileNotFoundException, IOException {
-		 Properties props = new Properties();
-		 File propFile = new File(fileName);
-		 props.load(new FileInputStream(propFile));
-		 
-		 username = props.getProperty("netatmo_username");
-		 password = props.getProperty("netatmo_password");
+	public NetatmoRestClient(String u, String p) throws FileNotFoundException, IOException {
+		 this.username = u;
+		 this.password = p;
 	}
 	
 	public void init() throws ClientProtocolException, IOException {
-		nc = new SampleHttpClient();
+		nc = new RestHttpClient();
 		
 		// Login to Netatmo service
 		nc.login(username, password, new NetatmoResponseHandler(nc, NetatmoResponseHandler.REQUEST_LOGIN, null));
@@ -52,11 +43,13 @@ public class NetatmoRestClient {
 	public static void main(String[] args) {
 		String filename = "netatmo.properties";
 		
-		if(args.length > 0)
-			filename = args[0];
+		if(args.length != 2) {
+			System.out.println("Usage: NetatmoRestClient <username> <password>");
+			return;
+		} 
 		
 		try {
-			NetatmoRestClient nrc = new NetatmoRestClient(filename);
+			NetatmoRestClient nrc = new NetatmoRestClient(args[0],args[1]);
 			nrc.init();
 			// nrc.log();
 		} catch (FileNotFoundException e) {

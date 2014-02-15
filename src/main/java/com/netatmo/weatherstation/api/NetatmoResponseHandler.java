@@ -19,8 +19,6 @@ public class NetatmoResponseHandler implements ResponseHandler<String> {
     public static final int REQUEST_GET_DEVICES_LIST = 1;
     public static final int REQUEST_GET_LAST_MEASURES = 2;
 
-    static final String TAG = "NetatmoResponseHandler";
-
     NetatmoHttpClient mHttpClient;
     int mRequestType;
     String[] mMeasuresTypes;

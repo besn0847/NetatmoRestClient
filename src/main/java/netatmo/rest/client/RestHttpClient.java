@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.netatmo.weatherstation.sample;
+package netatmo.rest.client;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import com.netatmo.weatherstation.api.NetatmoConstants;
 import com.netatmo.weatherstation.api.NetatmoHttpClient;
 import com.netatmo.weatherstation.api.NetatmoUtils;
 
@@ -33,18 +34,15 @@ import com.netatmo.weatherstation.api.NetatmoUtils;
  * as long as they are properly returned by the getters.
  * If you want to add your own '/getmeasure' requests, this is also the place to do it.
  */
-public class SampleHttpClient extends NetatmoHttpClient {
-    final String CLIENT_ID = "52ea7ef91b7759f96250c24b";
-    final String CLIENT_SECRET = "CoONiS67jOcSIXQlNh3ZLqmReXLiU6TFixJ4hso4mhkgn";
-
+public class RestHttpClient extends NetatmoHttpClient {
     private Properties mSharedPrefs;
     private Preferences tokenStore;
 
-    public SampleHttpClient() {
+    public RestHttpClient() {
     	tokenStore = Preferences.userRoot().node(this.getClass().getName());
     }
     
-    public SampleHttpClient(String fileName) throws FileNotFoundException, IOException {
+    public RestHttpClient(String fileName) throws FileNotFoundException, IOException {
         this();
         File propFile = new File(fileName);
         mSharedPrefs.load(new FileInputStream(propFile));
@@ -52,12 +50,12 @@ public class SampleHttpClient extends NetatmoHttpClient {
     
     @Override
     protected String getClientId() {
-        return CLIENT_ID;
+        return NetatmoConstants.CLIENT_ID;
     }
 
     @Override
     protected String getClientSecret() {
-        return CLIENT_SECRET;
+        return NetatmoConstants.CLIENT_SECRET;
     }
 
     @Override
